@@ -186,7 +186,7 @@ void init_linalg(py::module_& parent_module) {
       R"pbdoc(
         qr(a: array, *, stream: Union[None, Stream, Device] = None) -> (array, array)
 
-        The QR factorizatoin of the input matrix.
+        The QR factorization of the input matrix.
 
         This function supports arrays with at least 2 dimensions. The matrices
         which are factorized are assumed to be in the last two dimensions of
@@ -209,5 +209,29 @@ void init_linalg(py::module_& parent_module) {
             >>> R
             array([[-2.23607, -3.57771],
                    [0, 0.447214]], dtype=float32)
+      )pbdoc");
+  m.def(
+      "svd",
+      &svd,
+      "a"_a,
+      py::kw_only(),
+      "stream"_a = none,
+      R"pbdoc(
+        svd(a: array, *, stream: Union[None, Stream, Device] = None) -> (array, array, array)
+
+        The Singular Value Decomposition (SVD) of the input matrix.
+
+        This function supports arrays with at least 2 dimensions. When the input
+        has more than two dimensions, the function operates in "stacked mode" like
+        numpy.
+
+        Args:
+            a (array): Input array.
+            stream (Stream, optional): Stream or device. Defaults to ``None``
+              in which case the default stream of the default device is used.
+
+        Returns:
+            tuple(array, array, array): The ``U``, ``S``, and ``Vt`` matrices, such that
+              ``A = U @ diag(S) @ Vt``
       )pbdoc");
 }
